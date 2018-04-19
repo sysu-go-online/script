@@ -58,8 +58,8 @@ services:
     volumes:
       - /server/script/dev/nginx:/etc/nginx:ro
       - /server/static/dev:/data/static
-    expose:
-      - "80:80"
+    ports:
+      - 80:80
     links:
       - service-end
       # - mysql_client
