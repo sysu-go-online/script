@@ -74,7 +74,4 @@ networks:
   share:
     external:
       name: activity
-
-volumes:
-
     
