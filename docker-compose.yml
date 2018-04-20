@@ -56,7 +56,7 @@ services:
   dev_gateway:
     image: txzdream/go-online-front_end:dev
     volumes:
-      - /server/script/dev/nginx:/etc/nginx:ro
+      - /server/script/dev/nginx:/etc/nginx/conf.d:ro
       - /server/static/dev:/data/static
     ports:
       - 80:80
