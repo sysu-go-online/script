@@ -27,7 +27,7 @@ services:
       - /usr/bin/docker:/usr/bin/docker
     expose:
       - 8888
-    environments:
+    environment:
       - PORT=8888
     networks:
       - own
