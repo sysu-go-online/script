@@ -5,23 +5,11 @@ HOST: http://go-online/api
 
 go-online is a simple online application which allows people code, run and test anywhere.
 
-## OAuth2 Collection [/auth]
+## Session Collection [/session]
 
-### Get authorization [GET /auth?code={code}&state={state}]
+### User login [POST /session]
 
-+ Response 200 (applocation/json)
 
-    + Headers
-    
-            Token: token
-    
-    + Body
-    
-            {
-                "name": "username",
-                "icon": "icon url"
-            }
-            
 ## User Collection [/users]
 
 ### Get user message [GET /users/{username}]
@@ -39,7 +27,7 @@ go-online is a simple online application which allows people code, run and test 
 + Response 204
 
 ### Update user message [PATCH /users/{username}]
-
+aliy
 + Request (application/json)
 
         {
@@ -61,11 +49,9 @@ go-online is a simple online application which allows people code, run and test 
     
                 {
                     "name": "projectName",
-                    "language": 1,
+                    "language": "golang",
                     "setting": {
-                        "gopath": "/go",
-                        "version": "1.9.0",
-                        "github_user"
+                        "version": "1.9.0"
                     }
                 }
                 
@@ -78,7 +64,7 @@ go-online is a simple online application which allows people code, run and test 
         [
             {
                 "name": "projectname",
-                "language": 1
+                "language": "golang"
             }
         ]
         
@@ -96,19 +82,16 @@ Get file structure with given projectid
             {
                 "id": 1,
                 "name": "file1",
-                "edit_status": 0,
                 "type": "file"
             },
             {
                 "id": 2,
                 "name": "dir1",
-                "edit_status": 0,
                 "type": "dir",
                 "children": [
                     {
                         "id": 3,
                         "name": "file2",
-                        "edit_status": 0,
                         "type": "file"
                     }
                 ]
