@@ -36,6 +36,24 @@ go-online is a simple online application which allows people code, run and test 
 
 + Response 204
 
+### Create User [POST /users]
+
++ Request
+
+        + body (application/json)
+        
+            {
+                "email": "email@email.com",
+                "username": "username",
+                "password": "password"
+            }
+            
++ Response 200
+
++ Response 401
+
++ Response 500
+
 ## Project Collection [/users/{username}/projects]
 
 ### Create project [POST /users/{username}/projects]
