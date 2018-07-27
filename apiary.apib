@@ -15,37 +15,20 @@ go-online is a simple online application which allows people code, run and test 
 
         {
             "name": "username",
-            "githubURL": "https://url",
-            "email": "user@gmail.com",
-            "gender": 0,
-            "age": 18
+            "email": "user@gmail.com"
         }
-
-+ Response 204
-
-### Update user message [PATCH /users/{username}]
-
-+ Request (application/json)
-
-        {
-            "gender": 1,
-            "age": 19
-        }
-                
-+ Response 200
 
 + Response 204
 
 ### Create User [POST /users]
 
-+ Request
++ Request (application/json)
 
-        + body (application/json)
+    + Body
         
             {
-                "email": "email@email.com",
-                "username": "username",
-                "password": "password"
+                    "email": "email@email.com",
+                    "password": "password"
             }
             
 + Response 200
@@ -54,21 +37,60 @@ go-online is a simple online application which allows people code, run and test 
 
 + Response 500
 
+## Session Collection [/sessions]
+
+### User login [POST /sessions]
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: token
+
+    + Body
+    
+            {
+                    "email":"email@email.com",
+                    "password":"password"
+            }
+            
++ Response 200
+        
+    + Headers
+        
+            Authorization: token
+
++ Response 400
+
++ Response 500
+
+### User logout [DELETE /sessions]
+
++ Request
+
+    + Headers
+        
+            Authorization: token
+        
++ Response 200
+
++ Response 401
+
 ## Project Collection [/users/{username}/projects]
 
 ### Create project [POST /users/{username}/projects]
 
-+ Request
++ Request (application/json)
 
-        + body (application/json)
-    
-                {
-                    "name": "projectName",
-                    "language": "golang",
-                    "setting": {
-                        "version": "1.9.0"
-                    }
+    + Body
+
+            {
+                "name": "projectName",
+                "language": "golang",
+                "setting": {
+                    "version": "1.9.0"
                 }
+            }
                 
 + Response 200 (application/json)
 
