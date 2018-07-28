@@ -36,10 +36,10 @@ services:
   dev_gateway:
     image: txzdream/go-online-front_end:dev
     volumes:
-      # - /server/script/dev/nginx:/etc/nginx/conf.d:ro
-      # - /server/static/dev:/data/static
-      - /home/tangxuanzhao/Documents/development/go-online/script/nginx:/etc/nginx/conf.d:ro
-      - /home/tangxuanzhao/Documents/development/go-online/static:/data/static
+      - /server/script/dev/nginx:/etc/nginx/conf.d:ro
+      - /server/static/dev:/data/static
+      # - /home/tangxuanzhao/Documents/development/go-online/script/nginx:/etc/nginx/conf.d:ro
+      # - /home/tangxuanzhao/Documents/development/go-online/static:/data/static
     ports:
       - 80:80
     links:
@@ -50,7 +50,7 @@ services:
   mysql:
     image: mysql:5.6
     volumes:
-      - /home/tangxuanzhao/Documents/development/go-online/mysql:/var/lib/mysql
+      - /server/mysql/dev:/var/lib/mysql
     environment:
         MYSQL_ROOT_PASSWORD: root
     ports:
@@ -67,7 +67,7 @@ services:
   redis:
     image: redis
     volumes:
-      - /home/tangxuanzhao/Documents/development/go-online/redis:/data
+      - /server/redis/dev:/data
     ports:
       - 6379:6379
 
