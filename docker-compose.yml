@@ -10,13 +10,19 @@ services:
       - DEVELOP=true
       - PORT=8080
       - DOCKER_ADDRESS=docker-service
-      - docker_PORT=8888
+      - DOCKER_PORT=8888
+      - DATABASE_ADDRESS=mysql
+      - DATABASE_PORT=3306
+      - REDIS_ADDRESS=redis
+      - REDIS_PORT=6379
     volumes:
       - /home:/home
     expose:
       - 8080
     links:
       - docker-service
+      - mysql
+      - redis
 
   docker-service:
     image: txzdream/go-online-docker_end:dev
@@ -38,3 +44,37 @@ services:
       - 80:80
     links:
       - service-end
+      - mysql_client
+      - redis_client
+
+  mysql:
+    image: mysql:5.6
+    volumes:
+      - /home/tangxuanzhao/Documents/development/go-online/mysql:/var/lib/mysql
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+        
+  mysql_client:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=mysql
+      - PMA_ABSOLUTE_URI=/db
+    links:
+      - mysql
+
+  redis:
+    image: redis
+    volumes:
+      - /home/tangxuanzhao/Documents/development/go-online/redis:/data
+    ports:
+      - 6379:6379
+
+  redis_client:
+    image: marian/rebrow
+    ports:
+      - 5001:5001
+    links:
+      - redis
+
