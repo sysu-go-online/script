@@ -5,23 +5,8 @@ HOST: http://go-online/api
 
 go-online is a simple online application which allows people code, run and test anywhere.
 
-## OAuth2 Collection [/auth]
+## Session Collection [/session]
 
-### Get authorization [GET /auth?code={code}&state={state}]
-
-+ Response 200 (applocation/json)
-
-    + Headers
-    
-            Token: token
-    
-    + Body
-    
-            {
-                "name": "username",
-                "icon": "icon url"
-            }
-            
 ## User Collection [/users]
 
 ### Get user message [GET /users/{username}]
@@ -30,44 +15,82 @@ go-online is a simple online application which allows people code, run and test 
 
         {
             "name": "username",
-            "githubURL": "https://url",
-            "email": "user@gmail.com",
-            "gender": 0,
-            "age": 18
+            "email": "user@gmail.com"
         }
 
 + Response 204
 
-### Update user message [PATCH /users/{username}]
+### Create User [POST /users]
 
 + Request (application/json)
 
-        {
-            "gender": 1,
-            "age": 19
-        }
-                
+    + Body
+        
+            {
+                    "email": "email@email.com",
+                    "password": "password"
+            }
+            
 + Response 200
 
-+ Response 204
++ Response 401
+
++ Response 500
+
+## Session Collection [/sessions]
+
+### User login [POST /sessions]
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: token
+
+    + Body
+    
+            {
+                    "email":"email@email.com",
+                    "password":"password"
+            }
+            
++ Response 200
+        
+    + Headers
+        
+            Authorization: token
+
++ Response 400
+
++ Response 500
+
+### User logout [DELETE /sessions]
+
++ Request
+
+    + Headers
+        
+            Authorization: token
+        
++ Response 200
+
++ Response 401
 
 ## Project Collection [/users/{username}/projects]
 
 ### Create project [POST /users/{username}/projects]
 
-+ Request
++ Request (application/json)
 
-        + body (application/json)
-    
-                {
-                    "name": "projectName",
-                    "language": 1,
-                    "setting": {
-                        "gopath": "/go",
-                        "version": "1.9.0",
-                        "github_user"
-                    }
+    + Body
+
+            {
+                "name": "projectName",
+                "language": "golang",
+                "setting": {
+                    "version": "1.9.0"
                 }
+            }
                 
 + Response 200 (application/json)
 
@@ -78,7 +101,7 @@ go-online is a simple online application which allows people code, run and test 
         [
             {
                 "name": "projectname",
-                "language": 1
+                "language": "golang"
             }
         ]
         
@@ -96,19 +119,16 @@ Get file structure with given projectid
             {
                 "id": 1,
                 "name": "file1",
-                "edit_status": 0,
                 "type": "file"
             },
             {
                 "id": 2,
                 "name": "dir1",
-                "edit_status": 0,
                 "type": "dir",
                 "children": [
                     {
                         "id": 3,
                         "name": "file2",
-                        "edit_status": 0,
                         "type": "file"
                     }
                 ]
@@ -167,21 +187,8 @@ Delete file content with given file path
     
 + Response 200
 
-## Command Collection [/ws]
+## WebSocket Collection [/ws]
 
-### Init a connection
+### TTY Connection [/ws/tty]
 
-We should note that this collection uses ws to communicate with each other, so I can not show the IO with this document.
-In general, the front end init a ws connection with server, and there should include some validation message in there's header.
-All the message in a connection is a part of the initial command and once the connection was shutted down, it means the resources should be released.
-A user can use one command now, and he can use one connection , that is , one docker container at the same time.
-
-+ Request
-
-    + Body
-    
-            "Here is a command to be run"
-            
-+ Response 200 (plain/text)
-
-        "Here is the return message"
+### Debug Connection [/ws/debug]
