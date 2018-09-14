@@ -180,7 +180,7 @@ Upload file content with given file path
 + Parameters
     + filepath: "a/b/a" (string) - Specified the relative path with the project root
    
-+ Request
++ Request (application/json)
 
     + Headers
 
@@ -188,7 +188,32 @@ Upload file content with given file path
             
     + Body
     
-            "Here is the content of the file required to be updated"
+            {
+                "operation": "update",
+                "content": "here is the content to be saved"
+            }
+
++ Response 200
+
+### Rename file [PATCH /users/{username}/projects/{projectname}/files/{filepath}]
+
+Upload file content with given file path
+
++ Parameters
+    + filepath: "a/b/a" (string) - Specified the relative path with the project root
+   
++ Request (application/json)
+
+    + Headers
+
+            Authorization: token
+            
+    + Body
+    
+            {
+                "operation": "rename",
+                "content": "new relative file path"
+            }
 
 + Response 200
 
