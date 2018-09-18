@@ -190,7 +190,12 @@ Upload file content with given file path
     
             {
                 "operation": "update",
-                "content": "here is the content to be saved"
+                "content": {
+                    "position": "l24c15(l行数c列数，均从1开始计数，表示为操作前的位置)",
+                    "insert": "content to be inserted",
+                    "delete": "5(删除的长度，表示当前位置之后被删除的长度
+                    ，删除和插入只会执行一个，两者都为空时则只执行插入)"
+                }
             }
 
 + Response 200
