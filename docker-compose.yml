@@ -1,10 +1,10 @@
 # mysql listening on port 3306
 # redis listening on port 6379
 # service-end listening on port 8080
-version: '2'
+version: '2.2'
 
 services:
-  service-end:
+  api-service:
     image: txzdream/go-online-service_end:dev
     environment:
       - DEVELOP=true
@@ -15,6 +15,8 @@ services:
       - DATABASE_PORT=3306
       - REDIS_ADDRESS=redis
       - REDIS_PORT=6379
+      - CONSUL_ADDRESS=user-consul
+      - CONSUL_PORT=8500
     volumes:
       - /home:/home
     expose:
@@ -23,6 +25,10 @@ services:
       - docker-service
       - mysql
       - redis
+      - user-consul
+    networks:
+      - user-services
+      - default
 
   docker-service:
     image: txzdream/go-online-docker_end:dev
@@ -33,7 +39,7 @@ services:
     environment:
       - PORT=8888
 
-  dev_gateway:
+  gateway:
     image: txzdream/go-online-front_end:dev
     volumes:
       - /server/script/dev/nginx:/etc/nginx/conf.d:ro
@@ -43,9 +49,13 @@ services:
     ports:
       - 80:80
     links:
-      - service-end
+      - api-service
       - mysql_client
       - redis_client
+      - user-gateway
+    networks:
+      - user-services
+      - default
 
   mysql:
     image: mysql:5.6
@@ -78,3 +88,41 @@ services:
     links:
       - redis
 
+  user-consul:
+    image: 'consul'
+    command: 'agent -server -bootstrap-expect 3 -disable-host-node-id -client 0.0.0.0 -ui'
+    scale: 1
+    ports:
+      - '8400:8400'
+      - '8500:8500'
+      - '8600:8600/udp'
+    networks:
+      - user-services
+
+  consul-worker:
+    image: 'consul'
+    user: root
+    command: 'agent -server -join user-consul -disable-host-node-id -client 0.0.0.0 -ui'
+    scale: 2
+    links:
+      - user-consul
+    networks:
+      - user-services
+
+  user-gateway:
+    image: txzdream/go-online-user-service-proxy:dev
+    expose:
+      - 8081
+    links:
+      - user-consul
+    environment:
+      - DEVELOP=true
+      - CONSUL_ADDRESS=user-consul
+      - CONSUL_PORT=8500
+      - DOMAIN_NAME=localhost
+    networks:
+      - user-services
+
+networks: 
+  user-services:
+    driver: bridge
