@@ -1,7 +1,7 @@
 # mysql listening on port 3306
 # redis listening on port 6379
 # service-end listening on port 8080
-version: '2.2'
+version: '2.1'
 
 services:
   api-service:
