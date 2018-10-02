@@ -6,5 +6,7 @@ codker pull mysql:5.6
 docker pull redis
 docker pull marian/rebrow
 docker pull phpmyadmin/phpmyadmin
+docker pull consul
+docker pull txzdream/go-online-user-service-proxy:dev
 echo "y" | docker image prune
 docker-compose up -d
