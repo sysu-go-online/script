@@ -9,7 +9,7 @@ go-online is a simple online application which allows people code, run and test 
 
 ## User Collection [/users]
 
-### Get user message [GET /users/{username}]
+### Get user information [GET /users/{username}]
 
 + Response 200 (application/json)
 
@@ -37,25 +37,29 @@ go-online is a simple online application which allows people code, run and test 
 
 + Response 500
 
-## Session Collection [/sessions]
+## Auth Collection [/auth]
 
-### User login [POST /sessions]
+### User login [POST /auth?type={authtype}]
 
++ Parameters
+
+    + authtype: "jwt" (string) - Specified the auth type
+    
 + Request (application/json)
 
     + Headers
-    
+
             Authorization: token
 
     + Body
-    
+
             {
                     "username":"username",
                     "password":"password"
             }
             
 + Response 200
-        
+
     + Headers
         
             Authorization: token
@@ -64,7 +68,7 @@ go-online is a simple online application which allows people code, run and test 
 
 + Response 500
 
-### User logout [DELETE /sessions]
+### User logout [DELETE /auth?type={authtype}]
 
 + Request
 
@@ -82,37 +86,57 @@ go-online is a simple online application which allows people code, run and test 
 
 + Request (application/json)
 
+    + Headers
+        
+            Authorization: token
+
     + Body
 
             {
                 "name": "projectName",
-                "language": "golang",
+                "description": "description",
+                "language": 1,
+                "git_path":"https://xxx.github.git",
                 "setting": {
-                    "version": "1.9.0"
+                    "username": "sysu-go-online"
                 }
             }
                 
-+ Response 200 (application/json)
++ Response 200
+
++ Response 401
 
 ### List projects [GET /users/{username}/projects]
 
 + Response 200 (application/json)
 
+    + Headers
+        
+            Authorization: token
+            
+    + Body
         [
             {
                 "name": "projectname",
-                "language": "golang"
+                "language": 0
             }
         ]
         
 + Response 204
+
++ Response 401
 
 ## File Collection [/users/{username}/projects/{projectname}/files]
 
 ### Get file structure [GET /users/{username}/projects/{projectname}/files]
 
 Get file structure with given projectid
-    
++ Request
+
+    + Headers
+
+            Authorization: token
+            
 + Response 200 (application)
 
         [
@@ -141,6 +165,12 @@ Get file content with given and file path
 
 + Parameters
     + filepath: "a/b/a" (string) - Specified the relative path with the project root
+
++ Request
+
+    + Headers
+
+            Authorization: token
     
 + Response 200 (plain/text)
 
@@ -153,11 +183,45 @@ Upload file content with given file path
 + Parameters
     + filepath: "a/b/a" (string) - Specified the relative path with the project root
    
-+ Request
++ Request (application/json)
 
+    + Headers
+
+            Authorization: token
+            
     + Body
     
-            "Here is the content of the file required to be updated"
+            {
+                "operation": "update",
+                "content": {
+                    "position": "l24c15(l行数c列数，均从1开始计数，表示为操作前的位置)",
+                    "insert": "content to be inserted",
+                    "delete": "5(删除的长度，表示当前位置之后被删除的长度
+                    ，删除和插入只会执行一个，两者都为空时则只执行插入)"
+                }
+            }
+
++ Response 200
+
+### Rename file [PATCH /users/{username}/projects/{projectname}/files/{filepath}]
+
+Upload file content with given file path
+
++ Parameters
+    + filepath: "a/b/a" (string) - Specified the relative path with the project root
+   
++ Request (application/json)
+
+    + Headers
+
+            Authorization: token
+            
+    + Body
+    
+            {
+                "operation": "rename",
+                "content": "new relative file path"
+            }
 
 + Response 200
 
@@ -168,7 +232,11 @@ Create a new file with given path
 + Parameters
     + filepath: "a/b/a" (string) - Specified the relative path with the project root
 
-+ Request
++ Request (application/json)
+
+    + Headers
+
+            Authorization: token
 
     + Body
     
@@ -185,10 +253,20 @@ Delete file content with given file path
 + Parameters
     + filepath: "a/b/a" (string) - Specified the relative path with the project root
     
++ Request
+
+    + Headers
+    
+            Authorization: token
+    
 + Response 200
 
 ## WebSocket Collection [/ws]
 
 ### TTY Connection [/ws/tty]
 
+Connect to tty service
+
 ### Debug Connection [/ws/debug]
+
+Connect to debug service
