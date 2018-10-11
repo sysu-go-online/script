@@ -17,6 +17,7 @@ services:
       - REDIS_PORT=6379
       - CONSUL_ADDRESS=user-consul
       - CONSUL_PORT=8500
+      - DOMAIN_NAME=127.79.0.17.xip.io
     volumes:
       - /home:/home
     expose:
