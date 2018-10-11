@@ -51,7 +51,6 @@ services:
     links:
       - api-service
       - mysql_client
-      - redis_client
       - user-gateway
     networks:
       - user-services
