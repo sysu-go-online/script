@@ -35,6 +35,33 @@ go-online is a simple online application which allows people code, run and test 
 
 + Response 500
 
+### Get User home directory structure [GET /users/{username}/files]
+
++ Request
+
+    + Headers
+
+            Authorization: token
+            
++ Response 200 (application)
+
+        [
+            {
+                "name": "file1",
+                "type": "file"
+            },
+            {
+                "name": "dir1",
+                "type": "dir",
+                "children": [
+                    {
+                        "name": "file2",
+                        "type": "file"
+                    }
+                ]
+            }
+        ]
+
 ## Auth Collection [/auth]
 
 ### User login [POST /auth?type={authtype}]
@@ -93,7 +120,7 @@ go-online is a simple online application which allows people code, run and test 
             {
                 "name": "projectName",
                 "description": "description",
-                "language": 1,
+                "path": "go/src/github.com/username/"
                 "git_path":"https://xxx.github.git"
             }
                 
@@ -136,17 +163,14 @@ Get file structure with given projectid
 
         [
             {
-                "id": 1,
                 "name": "file1",
                 "type": "file"
             },
             {
-                "id": 2,
                 "name": "dir1",
                 "type": "dir",
                 "children": [
                     {
-                        "id": 3,
                         "name": "file2",
                         "type": "file"
                     }
