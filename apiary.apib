@@ -148,6 +148,117 @@ go-online is a simple online application which allows people code, run and test 
 
 + Response 401
 
+## Server Collection [/users/{username}/servers]
+
+### Change port status [PATCH /users/{username}/servers/{id}/ports/{portNumber}]
+
++ Request (application/json)
+
+    + Headers
+        
+            Authorization: token
+            
+    + Body
+    
+        {
+            "expose": true
+        }
+            
++ Response 200 (application)
+
+        {
+            "ok": true,
+            "url": "xxx.go-online.com"
+        }
+
++ Response 401
+
+### Get ports status [GET /users/{username}/servers/{id}/ports]
+
++ Request (application/json)
+
+    + Headers
+        
+            Authorization: token
+            
++ Response 200 (application)
+
+        [
+            {
+                "port": 8080,
+                "url": "http://xxx.go-online.com"
+            }
+        ]
+
+### Start a server [PATCH /users/{username}/servers/{id}/status]
+
++ Request (application/json)
+
+    + Headers
+        
+            Authorization: token
+            
+    + Body
+    
+        {
+            "start": true
+        }
+            
++ Response 200
+
++ Response 204
+
++ Response 401
+
+### Create a server [PATCH /users/{username}/servers]
+
++ Request (application/json)
+
+    + Headers
+        
+            Authorization: token
+            
+    + Body
+    
+        {
+            "image": "mysql"
+        }
+            
++ Response 200
+
+        {
+            "id": "server_id",
+            "ok": true,
+            "msg": "exert the max number"
+        }
+        
+### Remove a server [DELETE /users/{username}/servers/{id}]
+
++ Request (application/json)
+
+    + Headers
+        
+            Authorization: token
+            
++ Response 200
+
+### Get server status [GET /users/{username}/servers]
+
++ Request (application/json)
+
+    + Headers
+        
+            Authorization: token
+            
++ Response 200 (application)
+
+        [
+            {
+                "id": "server_id",
+                "isRunning": false
+            }
+        ]
+
 ## Docker Collection [/]
 
 ### Create container [POST /create]
