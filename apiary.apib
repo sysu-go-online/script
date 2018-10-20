@@ -148,6 +148,31 @@ go-online is a simple online application which allows people code, run and test 
 
 + Response 401
 
+## Docker Collection [/]
+
+### Create container [/create]
+
++ Request (application/json)
+
+    + Body
+    
+        {
+            "image": "ubuntu",
+            "pwd": "/root/",
+            "env": ["GOPATH=/root"],
+            "mnt": ["/home/txzdream", "/git"],
+            "target": ["/root", "/git"],
+            "network": ["username", "projectname"]
+        }
+            
++ Response 200 (application)
+
+        {
+            "id": "7fa064eee9ba",
+            "ok": true,
+            "msg": ""
+        }
+
 ## File Collection [/users/{username}/projects/{projectname}/files]
 
 ### Get file structure [GET /users/{username}/projects/{projectname}/files]
@@ -279,33 +304,6 @@ Delete file content with given file path
             Authorization: token
     
 + Response 200
-
-## File Collection [/]
-
-It can only be accessed by tty service instead user or browser.
-
-### Create container [/create]
-
-+ Request (application/json)
-
-    + Body
-    
-        {
-            "image": "ubuntu",
-            "pwd": "/root/",
-            "env": ["GOPATH=/root"],
-            "mnt": ["/home/txzdream", "/git"],
-            "target": ["/root", "/git"],
-            "network": ["username", "projectname"]
-        }
-            
-+ Response 200 (application)
-
-        {
-            "id": "7fa064eee9ba",
-            "ok": true,
-            "msg": ""
-        }
 
 ## WebSocket Collection [/ws]
 
