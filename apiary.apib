@@ -5,8 +5,6 @@ HOST: http://go-online/api
 
 go-online is a simple online application which allows people code, run and test anywhere.
 
-## Session Collection [/session]
-
 ## User Collection [/users]
 
 ### Get user information [GET /users/{username}]
@@ -96,10 +94,7 @@ go-online is a simple online application which allows people code, run and test 
                 "name": "projectName",
                 "description": "description",
                 "language": 1,
-                "git_path":"https://xxx.github.git",
-                "setting": {
-                    "username": "sysu-go-online"
-                }
+                "git_path":"https://xxx.github.git"
             }
                 
 + Response 200
@@ -266,7 +261,3 @@ Delete file content with given file path
 ### TTY Connection [/ws/tty]
 
 Connect to tty service
-
-### Debug Connection [/ws/debug]
-
-Connect to debug service
