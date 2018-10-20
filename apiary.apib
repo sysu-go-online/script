@@ -280,6 +280,33 @@ Delete file content with given file path
     
 + Response 200
 
+## File Collection [/]
+
+It can only be accessed by tty service instead user or browser.
+
+### Create container [/create]
+
++ Request (application/json)
+
+    + Body
+    
+        {
+            "image": "ubuntu",
+            "pwd": "/root/",
+            "env": ["GOPATH=/root"],
+            "mnt": ["/home/txzdream", "/git"],
+            "target": ["/root", "/git"],
+            "network": ["username", "projectname"]
+        }
+            
++ Response 200 (application)
+
+        {
+            "id": "7fa064eee9ba",
+            "ok": true,
+            "msg": ""
+        }
+
 ## WebSocket Collection [/ws]
 
 ### TTY Connection [/ws/tty]
