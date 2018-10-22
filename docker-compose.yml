@@ -81,13 +81,6 @@ services:
     ports:
       - 6379:6379
 
-  redis_client:
-    image: marian/rebrow
-    ports:
-      - 5001:5001
-    links:
-      - redis
-
   user-consul:
     image: 'consul'
     command: 'agent -server -bootstrap-expect 3 -disable-host-node-id -client 0.0.0.0 -ui'
