@@ -121,7 +121,8 @@ go-online is a simple online application which allows people code, run and test 
                 "name": "projectName",
                 "description": "description",
                 "path": "go/src/github.com/username/"
-                "git_path":"https://xxx.github.git"
+                "git_path":"https://xxx.github.git",
+                "isClone": true
             }
                 
 + Response 200
@@ -137,12 +138,13 @@ go-online is a simple online application which allows people code, run and test 
             Authorization: token
             
     + Body
-        [
-            {
-                "name": "projectname",
-                "language": 0
-            }
-        ]
+    
+            [
+                {
+                    "name": "projectname",
+                    "language": 0
+                }
+            ]
         
 + Response 204
 
@@ -160,9 +162,9 @@ go-online is a simple online application which allows people code, run and test 
             
     + Body
     
-        {
-            "expose": true
-        }
+            {
+                "expose": true
+            }
             
 + Response 200 (application)
 
@@ -200,9 +202,9 @@ go-online is a simple online application which allows people code, run and test 
             
     + Body
     
-        {
-            "start": true
-        }
+            {
+                "start": true
+            }
             
 + Response 200
 
@@ -220,9 +222,9 @@ go-online is a simple online application which allows people code, run and test 
             
     + Body
     
-        {
-            "image": "mysql"
-        }
+            {
+                "image": "mysql"
+            }
             
 + Response 200
 
@@ -258,31 +260,6 @@ go-online is a simple online application which allows people code, run and test 
                 "isRunning": false
             }
         ]
-
-## Docker Collection [/]
-
-### Create container [POST /create]
-
-+ Request (application/json)
-
-    + Body
-    
-        {
-            "image": "ubuntu",
-            "pwd": "/root/",
-            "env": ["GOPATH=/root"],
-            "mnt": ["/home/txzdream", "/git"],
-            "target": ["/root", "/git"],
-            "network": ["username", "projectname"]
-        }
-            
-+ Response 200 (application)
-
-        {
-            "id": "7fa064eee9ba",
-            "ok": true,
-            "msg": ""
-        }
 
 ## File Collection [/users/{username}/projects/{projectname}/files]
 
@@ -418,6 +395,33 @@ Delete file content with given file path
 
 ## WebSocket Collection [/ws]
 
-### TTY Connection [/ws/tty]
+### TTY Connection [GET /ws/tty]
 
 Connect to tty service
+
++ Response 200
+
+## Docker Collection [/]
+
+### Create container [POST /create]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "image": "ubuntu",
+                "pwd": "/root/",
+                "env": ["GOPATH=/root"],
+                "mnt": ["/home/txzdream", "/git"],
+                "target": ["/root", "/git"],
+                "network": ["username", "projectname"]
+            }
+            
++ Response 200 (application)
+
+        {
+            "id": "7fa064eee9ba",
+            "ok": true,
+            "msg": ""
+        }
