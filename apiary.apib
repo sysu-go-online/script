@@ -7,6 +7,8 @@ go-online is a simple online application which allows people code, run and test 
 
 ## User Collection [/users]
 
+`/users(\/[a-zA-Z_]+([0-9]*[a-zA-Z_-]*)*)?`
+
 ### Get user information [GET /users/{username}]
 
 + Response 200 (application/json)
@@ -66,6 +68,8 @@ go-online is a simple online application which allows people code, run and test 
 
 ## Auth Collection [/auth]
 
+`/auth`
+
 ### User login [POST /auth?type={authtype}]
 
 + Parameters
@@ -108,6 +112,8 @@ go-online is a simple online application which allows people code, run and test 
 + Response 401
 
 ## Project Collection [/users/{username}/projects]
+
+`/users/[a-zA-Z_]+([0-9]*[a-zA-Z_-]*)*/projects`
 
 ### Create project [POST /users/{username}/projects]
 
@@ -152,6 +158,8 @@ go-online is a simple online application which allows people code, run and test 
 + Response 401
 
 ## Server Collection [/users/{username}/servers]
+
+`/users/[a-zA-Z_]+([0-9]*[a-zA-Z_-]*)*/servers`
 
 ### Change port status [PATCH /users/{username}/servers/{id}/ports/{portNumber}]
 
@@ -263,6 +271,8 @@ go-online is a simple online application which allows people code, run and test 
         ]
 
 ## File Collection [/users/{username}/projects/{projectname}/files]
+
+`/users/[a-zA-Z_]+([0-9]*[a-zA-Z_-]*)*/projects/[a-zA-Z_]+([0-9]*[a-zA-Z_-]*)*/files`
 
 ### Get file structure [GET /users/{username}/projects/{projectname}/files]
 
@@ -403,6 +413,8 @@ Connect to tty service
 + Response 200
 
 ## Docker Collection [/]
+
+`/`
 
 ### Create container [POST /create]
 
