@@ -4,8 +4,161 @@
 version: '2.2'
 
 services:
-  api-service:
-    image: txzdream/go-online-service_end:dev
+  gateway:
+    image: txzdream/go-online-front_end:dev
+    volumes:
+      # - /server/script/dev/nginx:/etc/nginx/conf.d:ro
+      # - /server/static/dev:/data/static
+      - /home/tangxuanzhao/Documents/development/go-online/script/nginx:/etc/nginx/conf.d:ro
+      - /home/tangxuanzhao/Documents/development/go-online/static:/data/static
+    ports:
+      - 80:80
+    links:
+      - mysql_client
+      - user-gateway
+      - project-service
+      - auth-service
+      - ws-service
+      - file-service
+      - static-service
+      - user-service
+    networks:
+      - user-services
+      - default
+    
+
+  user-service:
+    image: txzdream/go-online-user_service:dev
+    environment:
+      - DEVELOP=true
+      - PORT=8080
+      - DOCKER_ADDRESS=docker-service
+      - DOCKER_PORT=8888
+      - DATABASE_ADDRESS=mysql
+      - DATABASE_PORT=3306
+      - REDIS_ADDRESS=redis
+      - REDIS_PORT=6379
+      - CONSUL_ADDRESS=user-consul
+      - CONSUL_PORT=8500
+    volumes:
+      - /home:/home
+    expose:
+      - 8080
+    links:
+      - docker-service
+      - mysql
+      - redis
+      - user-consul
+    networks:
+      - user-services
+      - default
+
+  project-service:
+    image: txzdream/go-online-project_service:dev
+    environment:
+      - DEVELOP=true
+      - PORT=8080
+      - DOCKER_ADDRESS=docker-service
+      - DOCKER_PORT=8888
+      - DATABASE_ADDRESS=mysql
+      - DATABASE_PORT=3306
+      - REDIS_ADDRESS=redis
+      - REDIS_PORT=6379
+      - CONSUL_ADDRESS=user-consul
+      - CONSUL_PORT=8500
+    volumes:
+      - /home:/home
+    expose:
+      - 8080
+    links:
+      - docker-service
+      - mysql
+      - redis
+      - user-consul
+    networks:
+      - user-services
+      - default
+
+  auth-service:
+    image: txzdream/go-online-auth_service:dev
+    environment:
+      - DEVELOP=true
+      - PORT=8080
+      - DOCKER_ADDRESS=docker-service
+      - DOCKER_PORT=8888
+      - DATABASE_ADDRESS=mysql
+      - DATABASE_PORT=3306
+      - REDIS_ADDRESS=redis
+      - REDIS_PORT=6379
+      - CONSUL_ADDRESS=user-consul
+      - CONSUL_PORT=8500
+    volumes:
+      - /home:/home
+    expose:
+      - 8080
+    links:
+      - docker-service
+      - mysql
+      - redis
+      - user-consul
+    networks:
+      - user-services
+      - default
+
+  file-service:
+    image: txzdream/go-online-file_service:dev
+    environment:
+      - DEVELOP=true
+      - PORT=8080
+      - DOCKER_ADDRESS=docker-service
+      - DOCKER_PORT=8888
+      - DATABASE_ADDRESS=mysql
+      - DATABASE_PORT=3306
+      - REDIS_ADDRESS=redis
+      - REDIS_PORT=6379
+      - CONSUL_ADDRESS=user-consul
+      - CONSUL_PORT=8500
+    volumes:
+      - /home:/home
+    expose:
+      - 8080
+    links:
+      - docker-service
+      - mysql
+      - redis
+      - user-consul
+    networks:
+      - user-services
+      - default
+  
+  ws-service:
+    image: txzdream/go-online-ws_service:dev
+    environment:
+      - DEVELOP=true
+      - PORT=8080
+      - DOCKER_ADDRESS=docker-service
+      - DOCKER_PORT=8888
+      - DATABASE_ADDRESS=mysql
+      - DATABASE_PORT=3306
+      - REDIS_ADDRESS=redis
+      - REDIS_PORT=6379
+      - CONSUL_ADDRESS=user-consul
+      - CONSUL_PORT=8500
+    volumes:
+      - /home:/home
+    expose:
+      - 8080
+    links:
+      - docker-service
+      - mysql
+      - redis
+      - user-consul
+    networks:
+      - user-services
+      - default
+
+  static-service:
+    image: txzdream/go-online-static_end:dev
     environment:
       - DEVELOP=true
       - PORT=8080
@@ -39,24 +192,6 @@ services:
     environment:
       - PORT=8888
 
-  gateway:
-    image: txzdream/go-online-front_end:dev
-    volumes:
-      # - /server/script/dev/nginx:/etc/nginx/conf.d:ro
-      # - /server/static/dev:/data/static
-      - /home/tangxuanzhao/Documents/development/go-online/script/nginx/gateway:/etc/nginx/conf.d:ro
-      - /home/tangxuanzhao/Documents/development/go-online/static:/data/static
-    ports:
-      - 80:80
-    links:
-      - api-service
-      - mysql_client
-      - redis_client
-      - user-gateway
-    networks:
-      - user-services
-      - default
-
   mysql:
     image: mysql:5.6
     volumes:
@@ -82,7 +217,7 @@ services:
       - 6379:6379
 
   user-consul:
-    image: 'consul'
+    image: consul
     command: 'agent -server -bootstrap-expect 3 -disable-host-node-id -client 0.0.0.0 -ui'
     scale: 1
     ports:
@@ -93,7 +228,7 @@ services:
       - user-services
 
   consul-worker:
-    image: 'consul'
+    image: consul
     user: root
     command: 'agent -server -join user-consul -disable-host-node-id -client 0.0.0.0 -ui'
     scale: 2
