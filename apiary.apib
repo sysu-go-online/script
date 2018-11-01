@@ -5,9 +5,9 @@ HOST: http://go-online/api
 
 go-online is a simple online application which allows people code, run and test anywhere.
 
-## Session Collection [/session]
-
 ## User Collection [/users]
+
+`/users(\/[a-zA-Z_]+([0-9]*[a-zA-Z_-]*)*)?`
 
 ### Get user information [GET /users/{username}]
 
@@ -37,7 +37,36 @@ go-online is a simple online application which allows people code, run and test 
 
 + Response 500
 
+### Get User home directory structure [GET /users/{username}/files]
+
++ Request
+
+    + Headers
+
+            Authorization: token
+            
++ Response 200 (application)
+
+        [
+            {
+                "name": "file1",
+                "type": "file"
+            },
+            {
+                "name": "dir1",
+                "type": "dir",
+                "children": [
+                    {
+                        "name": "file2",
+                        "type": "file"
+                    }
+                ]
+            }
+        ]
+
 ## Auth Collection [/auth]
+
+`/auth`
 
 ### User login [POST /auth?type={authtype}]
 
@@ -82,6 +111,8 @@ go-online is a simple online application which allows people code, run and test 
 
 ## Project Collection [/users/{username}/projects]
 
+`/users/[a-zA-Z_]+([0-9]*[a-zA-Z_-]*)*/projects`
+
 ### Create project [POST /users/{username}/projects]
 
 + Request (application/json)
@@ -95,11 +126,9 @@ go-online is a simple online application which allows people code, run and test 
             {
                 "name": "projectName",
                 "description": "description",
-                "language": 1,
+                "path": "go/src/github.com/username/"
                 "git_path":"https://xxx.github.git",
-                "setting": {
-                    "username": "sysu-go-online"
-                }
+                "isClone": true
             }
                 
 + Response 200
@@ -115,18 +144,133 @@ go-online is a simple online application which allows people code, run and test 
             Authorization: token
             
     + Body
-        [
-            {
-                "name": "projectname",
-                "language": 0
-            }
-        ]
+    
+            [
+                {
+                    "name": "projectname"
+                }
+            ]
         
 + Response 204
 
 + Response 401
 
+## Server Collection [/users/{username}/servers]
+
+`/users/[a-zA-Z_]+([0-9]*[a-zA-Z_-]*)*/servers`
+
+### Change port status [PATCH /users/{username}/servers/{id}/ports/{portNumber}]
+
++ Request (application/json)
+
+    + Headers
+        
+            Authorization: token
+            
+    + Body
+    
+            {
+                "expose": true
+            }
+            
++ Response 200 (application)
+
+        {
+            "ok": true,
+            "url": "xxx.go-online.com"
+        }
+
++ Response 401
+
+### Get ports status [GET /users/{username}/servers/{id}/ports]
+
++ Request (application/json)
+
+    + Headers
+        
+            Authorization: token
+            
++ Response 200 (application)
+
+        [
+            {
+                "port": 8080,
+                "url": "http://xxx.go-online.com"
+            }
+        ]
+
+### Start a server [PATCH /users/{username}/servers/{id}/status]
+
++ Request (application/json)
+
+    + Headers
+        
+            Authorization: token
+            
+    + Body
+    
+            {
+                "start": true
+            }
+            
++ Response 200
+
++ Response 204
+
++ Response 401
+
+### Create a server [PATCH /users/{username}/servers]
+
++ Request (application/json)
+
+    + Headers
+        
+            Authorization: token
+            
+    + Body
+    
+            {
+                "image": "mysql"
+            }
+            
++ Response 200
+
+        {
+            "id": "server_id",
+            "ok": true,
+            "msg": "exert the max number"
+        }
+        
+### Remove a server [DELETE /users/{username}/servers/{id}]
+
++ Request (application/json)
+
+    + Headers
+        
+            Authorization: token
+            
++ Response 200
+
+### Get server status [GET /users/{username}/servers]
+
++ Request (application/json)
+
+    + Headers
+        
+            Authorization: token
+            
++ Response 200 (application)
+
+        [
+            {
+                "id": "server_id",
+                "isRunning": false
+            }
+        ]
+
 ## File Collection [/users/{username}/projects/{projectname}/files]
+
+`/users/[a-zA-Z_]+([0-9]*[a-zA-Z_-]*)*/projects/[a-zA-Z_]+([0-9]*[a-zA-Z_-]*)*/files`
 
 ### Get file structure [GET /users/{username}/projects/{projectname}/files]
 
@@ -141,17 +285,14 @@ Get file structure with given projectid
 
         [
             {
-                "id": 1,
                 "name": "file1",
                 "type": "file"
             },
             {
-                "id": 2,
                 "name": "dir1",
                 "type": "dir",
                 "children": [
                     {
-                        "id": 3,
                         "name": "file2",
                         "type": "file"
                     }
@@ -193,12 +334,7 @@ Upload file content with given file path
     
             {
                 "operation": "update",
-                "content": {
-                    "position": "l24c15(l行数c列数，均从1开始计数，表示为操作前的位置)",
-                    "insert": "content to be inserted",
-                    "delete": "5(删除的长度，表示当前位置之后被删除的长度
-                    ，删除和插入只会执行一个，两者都为空时则只执行插入)"
-                }
+                "content": "file content"
             }
 
 + Response 200
@@ -263,10 +399,35 @@ Delete file content with given file path
 
 ## WebSocket Collection [/ws]
 
-### TTY Connection [/ws/tty]
+### TTY Connection [GET /ws/tty]
 
 Connect to tty service
 
-### Debug Connection [/ws/debug]
++ Response 200
 
-Connect to debug service
+## Docker Collection [/]
+
+`/`
+
+### Create container [POST /create]
+
++ Request (application/json)
+
+    + Body
+    
+            {
+                "image": "ubuntu",
+                "pwd": "/root/",
+                "env": ["GOPATH=/root"],
+                "mnt": ["/home/txzdream", "/git"],
+                "target": ["/root", "/git"],
+                "network": ["username", "projectname"]
+            }
+            
++ Response 200 (application)
+
+        {
+            "id": "7fa064eee9ba",
+            "ok": true,
+            "msg": ""
+        }
