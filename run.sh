@@ -12,5 +12,9 @@ docker pull redis
 docker pull phpmyadmin/phpmyadmin
 docker pull consul
 docker pull txzdream/go-online-user-service-proxy:dev
+docker pull txzdream/go-online-golang_image
+docker pull txzdream/go-online-cpp_image
+docker pull txzdream/go-online-python_image
+docker pull ubuntu
 echo "y" | docker image prune
 docker-compose up -d
