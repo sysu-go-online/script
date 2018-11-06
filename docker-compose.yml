@@ -149,6 +149,7 @@ services:
       - /home:/home
     expose:
       - 8080
+    restart: always
     links:
       - docker-service
       - mysql
