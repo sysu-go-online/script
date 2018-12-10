@@ -126,7 +126,7 @@ go-online is a simple online application which allows people code, run and test 
             {
                 "name": "projectName",
                 "description": "description",
-                "path": "go/src/github.com/username/"
+                "path": "go/src/github.com/username/",
                 "git_path":"https://xxx.github.git",
                 "isClone": true
             }
@@ -161,6 +161,8 @@ go-online is a simple online application which allows people code, run and test 
 
 ### Change port status [PATCH /users/{username}/servers/{id}/ports/{portNumber}]
 
+Open or close a port
+
 + Request (application/json)
 
     + Headers
@@ -184,6 +186,8 @@ go-online is a simple online application which allows people code, run and test 
 
 ### Get ports status [GET /users/{username}/servers/{id}/ports]
 
+Get ports open or close status
+
 + Request (application/json)
 
     + Headers
@@ -199,7 +203,9 @@ go-online is a simple online application which allows people code, run and test 
             }
         ]
 
-### Start a server [PATCH /users/{username}/servers/{id}/status]
+### Change server status [PATCH /users/{username}/servers/{id}/status]
+
+Start or close a server
 
 + Request (application/json)
 
@@ -253,6 +259,8 @@ go-online is a simple online application which allows people code, run and test 
 
 ### Get server status [GET /users/{username}/servers]
 
+Get server list with state, like running state
+
 + Request (application/json)
 
     + Headers
@@ -275,6 +283,7 @@ go-online is a simple online application which allows people code, run and test 
 ### Get file structure [GET /users/{username}/projects/{projectname}/files]
 
 Get file structure with given projectid
+
 + Request
 
     + Headers
@@ -361,7 +370,7 @@ Upload file content with given file path
 
 + Response 200
 
-### Create new file [POST /users/{username}/projects/{projectname}/files/{filepath}]
+### Create new file(folder) [POST /users/{username}/projects/{projectname}/files/{filepath}]
 
 Create a new file with given path
 
