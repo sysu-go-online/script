@@ -135,6 +135,18 @@ go-online is a simple online application which allows people code, run and test 
 
 + Response 401
 
+### Delete project [DELETE /users/{username}/projects]
+
++ Request (application/json)
+
+    + Headers
+        
+            Authorization: token
+                
++ Response 200
+
++ Response 401
+
 ### List projects [GET /users/{username}/projects]
 
 + Response 200 (application/json)
@@ -186,7 +198,7 @@ Open or close a port
 
 ### Get ports status [GET /users/{username}/servers/{id}/ports]
 
-Get ports open or close status
+Check if ports is open
 
 + Request (application/json)
 
@@ -205,7 +217,7 @@ Get ports open or close status
 
 ### Change server status [PATCH /users/{username}/servers/{id}/status]
 
-Start or close a server
+Start or close a always running server which has been created before
 
 + Request (application/json)
 
@@ -226,6 +238,8 @@ Start or close a server
 + Response 401
 
 ### Create a server [PATCH /users/{username}/servers]
+
+To be finished, you can only create a default container whose image can be found in docker hub
 
 + Request (application/json)
 
@@ -257,7 +271,7 @@ Start or close a server
             
 + Response 200
 
-### Get server status [GET /users/{username}/servers]
+### Get server list with status [GET /users/{username}/servers]
 
 Get server list with state, like running state
 
@@ -272,6 +286,7 @@ Get server list with state, like running state
         [
             {
                 "id": "server_id",
+                "image": "mysql",
                 "isRunning": false
             }
         ]
@@ -411,6 +426,10 @@ Delete file content with given file path
 ### TTY Connection [GET /ws/tty]
 
 Connect to tty service
+
++ Response 200
+
+### Monitor directory changes [GET /ws/dir]
 
 + Response 200
 
