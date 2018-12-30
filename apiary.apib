@@ -309,16 +309,32 @@ Get file structure with given projectid
 
         [
             {
-                "name": "file1",
-                "type": "file"
-            },
-            {
-                "name": "dir1",
-                "type": "dir",
+                "name": "projectName",
+                "type": "folder",
+                "expand": true,
+                "selected": false,
+                "rename": false,
                 "children": [
                     {
-                        "name": "file2",
-                        "type": "file"
+                        "name": "folder 1",
+                        "type": "folder",
+                        "expand": false,
+                        "selected": false,
+                        "rename": false,
+                        "children": [
+                            {
+                                "name": "file 1",
+                                "type": "file",
+                                "selected": false,
+                                "rename": false
+                            }
+                        ]
+                    },
+                    {
+                        "name": "file 2",
+                        "type": "file",
+                        "selected": false,
+                        "rename": false
                     }
                 ]
             }
