@@ -144,6 +144,7 @@ services:
       - REDIS_PORT=6379
       - CONSUL_ADDRESS=user-consul
       - CONSUL_PORT=8500
+      - CONTAINER_USER_NAME=ubuntu
     volumes:
       - /home:/home
     expose:
@@ -191,6 +192,7 @@ services:
       - 8888
     environment:
       - PORT=8888
+      - CONTAINER_USER_NAME=ubuntu
 
   mysql:
     image: mysql:5.6
