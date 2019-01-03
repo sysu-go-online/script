@@ -237,7 +237,7 @@ Start or close a always running server which has been created before
 
 + Response 401
 
-### Create a server [PATCH /users/{username}/servers]
+### Create a server [POST /users/{username}/servers]
 
 To be finished, you can only create a default container whose image can be found in docker hub
 
@@ -250,13 +250,12 @@ To be finished, you can only create a default container whose image can be found
     + Body
     
             {
-                "image": "mysql"
+                "baseImage": "mysql"
             }
             
 + Response 200
 
         {
-            "id": "server_id",
             "ok": true,
             "msg": "exert the max number"
         }
